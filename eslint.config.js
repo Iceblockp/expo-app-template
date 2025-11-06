@@ -6,6 +6,35 @@ const reactHooks = require('eslint-plugin-react-hooks');
 const reactNative = require('eslint-plugin-react-native');
 const prettier = require('eslint-config-prettier');
 
+// Common globals for React Native environment
+const commonGlobals = {
+  console: 'readonly',
+  process: 'readonly',
+  Buffer: 'readonly',
+  __dirname: 'readonly',
+  __filename: 'readonly',
+  module: 'writable',
+  require: 'readonly',
+  exports: 'writable',
+  global: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearInterval: 'readonly',
+  __DEV__: 'readonly',
+  fetch: 'readonly',
+  FormData: 'readonly',
+  URLSearchParams: 'readonly',
+  File: 'readonly',
+  Blob: 'readonly',
+  URL: 'readonly',
+  RequestInfo: 'readonly',
+  RequestInit: 'readonly',
+  Response: 'readonly',
+  ReadableStream: 'readonly',
+  FormDataEntryValue: 'readonly',
+};
+
 module.exports = [
   js.configs.recommended,
   {
@@ -13,21 +42,7 @@ module.exports = [
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'writable',
-        require: 'readonly',
-        exports: 'writable',
-        global: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-      },
+      globals: commonGlobals,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -61,21 +76,7 @@ module.exports = [
       parser: typescriptParser,
       ecmaVersion: 2020,
       sourceType: 'module',
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-        Buffer: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        module: 'writable',
-        require: 'readonly',
-        exports: 'writable',
-        global: 'readonly',
-        setTimeout: 'readonly',
-        clearTimeout: 'readonly',
-        setInterval: 'readonly',
-        clearInterval: 'readonly',
-      },
+      globals: commonGlobals,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -98,6 +99,7 @@ module.exports = [
       '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-explicit-any': 'off', // Allow any types when necessary
       'react/react-in-jsx-scope': 'off', // React 17+ JSX transform
       'react/jsx-uses-react': 'off', // React 17+ JSX transform
     },
