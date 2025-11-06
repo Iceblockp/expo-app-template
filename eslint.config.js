@@ -23,6 +23,10 @@ module.exports = [
         require: 'readonly',
         exports: 'writable',
         global: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {
@@ -67,6 +71,10 @@ module.exports = [
         require: 'readonly',
         exports: 'writable',
         global: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {
