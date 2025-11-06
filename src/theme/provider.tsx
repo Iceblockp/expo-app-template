@@ -56,8 +56,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
         if (savedTheme && ['light', 'dark', 'system'].includes(savedTheme)) {
           setThemeState(savedTheme as ThemeMode);
         }
-      } catch (error) {
-        console.warn('Failed to load theme preference:', error);
+      } catch {
+        // Silently fail - theme will default to system
       }
     };
 
@@ -78,8 +78,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     try {
       await AsyncStorage.setItem(THEME_STORAGE_KEY, newTheme);
       setThemeState(newTheme);
-    } catch (error) {
-      console.warn('Failed to save theme preference:', error);
+    } catch {
       // Still update the state even if storage fails
       setThemeState(newTheme);
     }

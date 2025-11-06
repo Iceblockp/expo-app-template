@@ -3,6 +3,22 @@ export * from './tokens';
 export * from './components';
 export * from './provider';
 
+// NativeWind utilities (selective exports to avoid conflicts)
+export {
+  useThemeColors,
+  breakpoints,
+  sizeVariants,
+  buttonVariants,
+  inputVariants,
+  cardVariants,
+  typographyVariants,
+  cn,
+  createThemeAwareClass,
+  responsive,
+  animations,
+  layout,
+} from './nativewind';
+
 // Re-export commonly used types for convenience
 export type {
   ColorTokens,

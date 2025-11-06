@@ -1,7 +1,9 @@
+import './global.css';
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { ThemeProvider, useTheme } from './src/theme';
 import { useThemedStyles } from './src/hooks';
+import { NativeWindExample, NativeWindTest } from './src/components/ui';
 
 function AppContent() {
   const { setTheme, theme, isDark } = useTheme();
@@ -61,24 +63,39 @@ function AppContent() {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Universal Expo React Native Template</Text>
-      <Text style={styles.subtitle}>
-        Theme system initialized successfully!
-      </Text>
-
-      <TouchableOpacity style={styles.themeButton} onPress={cycleTheme}>
-        <Text style={styles.themeButtonText}>
-          Switch Theme (Current: {theme})
+    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Universal Expo React Native Template</Text>
+        <Text style={styles.subtitle}>
+          Theme system with NativeWind initialized successfully!
         </Text>
-      </TouchableOpacity>
 
-      <Text style={styles.themeInfo}>
-        Active theme: {isDark ? 'Dark' : 'Light'} mode
-      </Text>
+        <TouchableOpacity style={styles.themeButton} onPress={cycleTheme}>
+          <Text style={styles.themeButtonText}>
+            Switch Theme (Current: {theme})
+          </Text>
+        </TouchableOpacity>
 
-      <StatusBar style={isDark ? 'light' : 'dark'} />
-    </View>
+        <Text style={styles.themeInfo}>
+          Active theme: {isDark ? 'Dark' : 'Light'} mode
+        </Text>
+
+        <StatusBar style={isDark ? 'light' : 'dark'} />
+      </View>
+
+      {/* NativeWind Test Component */}
+      <NativeWindTest />
+
+      {/* NativeWind Example Component */}
+      <NativeWindExample
+        title="NativeWind Button"
+        variant="primary"
+        size="md"
+        onPress={() => {
+          // Handle button press
+        }}
+      />
+    </ScrollView>
   );
 }
 

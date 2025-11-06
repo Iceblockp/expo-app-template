@@ -1,4 +1,5 @@
 const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
 
 const config = getDefaultConfig(__dirname);
 
@@ -25,8 +26,8 @@ config.resolver.assetExts.push(
   'mkv'
 );
 
-// Configure source extensions
-config.resolver.sourceExts.push('jsx', 'js', 'ts', 'tsx', 'json');
+// Configure source extensions for NativeWind CSS support
+config.resolver.sourceExts.push('jsx', 'js', 'ts', 'tsx', 'json', 'css');
 
 // Enable minification in production
 config.transformer.minifierConfig = {
@@ -49,4 +50,4 @@ config.transformer.minifierConfig = {
 config.transformer.experimentalImportSupport = true;
 config.transformer.unstable_allowRequireContext = true;
 
-module.exports = config;
+module.exports = withNativeWind(config, { input: './global.css' });
