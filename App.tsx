@@ -2,11 +2,21 @@ import './global.css';
 import { StatusBar } from 'expo-status-bar';
 import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { ThemeProvider, useTheme } from './src/theme';
-import { useThemedStyles } from './src/hooks';
+import { useThemedStyles, useAppSelector, useAppDispatch } from './src/hooks';
+import {
+  setTheme as setReduxTheme,
+  selectTheme,
+  selectIsAuthenticated,
+} from './src/store';
 import { NativeWindExample, NativeWindTest } from './src/components/ui';
+import { ReduxExample } from './src/components/common';
+import { StoreProvider } from './src/store';
 
 function AppContent() {
   const { setTheme, theme, isDark } = useTheme();
+  const dispatch = useAppDispatch();
+  const reduxTheme = useAppSelector(selectTheme);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   const styles = useThemedStyles(theme => ({
     container: {
@@ -46,6 +56,12 @@ function AppContent() {
       color: theme.colors.text.tertiary,
       marginTop: theme.spacing[4],
     },
+    reduxInfo: {
+      fontSize: theme.typography.fontSize.sm,
+      color: theme.colors.text.secondary,
+      marginTop: theme.spacing[2],
+      textAlign: 'center',
+    },
   }));
 
   const cycleTheme = () => {
@@ -59,6 +75,8 @@ function AppContent() {
     const nextTheme = themes[nextIndex];
     if (nextTheme) {
       setTheme(nextTheme);
+      // Also update Redux store
+      dispatch(setReduxTheme(nextTheme));
     }
   };
 
@@ -80,6 +98,10 @@ function AppContent() {
           Active theme: {isDark ? 'Dark' : 'Light'} mode
         </Text>
 
+        <Text style={styles.reduxInfo}>
+          Redux Theme: {reduxTheme} | Auth: {isAuthenticated ? 'Yes' : 'No'}
+        </Text>
+
         <StatusBar style={isDark ? 'light' : 'dark'} />
       </View>
 
@@ -95,14 +117,19 @@ function AppContent() {
           // Handle button press
         }}
       />
+
+      {/* Redux Example Component */}
+      <ReduxExample />
     </ScrollView>
   );
 }
 
 export default function App() {
   return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
+    <StoreProvider>
+      <ThemeProvider>
+        <AppContent />
+      </ThemeProvider>
+    </StoreProvider>
   );
 }
