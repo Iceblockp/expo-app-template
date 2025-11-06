@@ -1,1 +1,2 @@
-// Custom React hooks will be exported from here
+// Custom React hooks exports
+export { useThemedStyles } from './useThemedStyles';
