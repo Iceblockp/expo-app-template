@@ -1,7 +1,7 @@
 {
   "name": "expo-template",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -15,16 +15,21 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-native-async-storage/async-storage": "2.2.0",
     "@reduxjs/toolkit": "^2.10.1",
     "@tanstack/react-query": "^5.90.7",
     "expo": "~54.0.22",
+    "expo-constants": "^18.0.10",
+    "expo-linking": "^8.0.8",
+    "expo-router": "~6.0.14",
+    "expo-splash-screen": "^31.0.10",
     "expo-status-bar": "~3.0.8",
     "nativewind": "^4.2.1",
     "react": "19.1.0",
     "react-native": "0.81.5",
-    "react-native-reanimated": "~3.17.4",
-    "react-native-safe-area-context": "^5.4.0",
+    "react-native-reanimated": "~4.1.1",
+    "react-native-safe-area-context": "~5.6.0",
+    "react-native-screens": "~4.16.0",
     "react-native-worklets": "0.5.1",
     "react-redux": "^9.2.0"
   },
@@ -48,6 +53,7 @@
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.5.14",
+    "react-refresh": "^0.18.0",
     "tailwindcss": "^3.4.18",
     "typescript": "^5.9.2"
   },

@@ -1,18 +1,19 @@
-import './global.css';
-import { StatusBar } from 'expo-status-bar';
-import { Text, View, TouchableOpacity, ScrollView } from 'react-native';
-import { ThemeProvider, useTheme } from './src/theme';
-import { useThemedStyles, useAppSelector, useAppDispatch } from './src/hooks';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { router } from 'expo-router';
+import {
+  useThemedStyles,
+  useAppSelector,
+  useAppDispatch,
+} from '../../src/hooks';
+import { useTheme } from '../../src/theme';
 import {
   setTheme as setReduxTheme,
   selectTheme,
   selectIsAuthenticated,
-} from './src/store';
-import { NativeWindExample, NativeWindTest } from './src/components/ui';
-import { ReduxExample } from './src/components/common';
-import { StoreProvider } from './src/store';
+  logout,
+} from '../../src/store';
 
-function AppContent() {
+export default function HomeScreen() {
   const { setTheme, theme, isDark } = useTheme();
   const dispatch = useAppDispatch();
   const reduxTheme = useAppSelector(selectTheme);
@@ -22,6 +23,9 @@ function AppContent() {
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
+    },
+    content: {
+      flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
       padding: theme.spacing[4],
@@ -39,17 +43,24 @@ function AppContent() {
       marginBottom: theme.spacing[8],
       textAlign: 'center',
     },
-    themeButton: {
+    button: {
       backgroundColor: theme.colors.primary[500],
       paddingHorizontal: theme.spacing[6],
       paddingVertical: theme.spacing[3],
       borderRadius: theme.borderRadius.md,
       marginBottom: theme.spacing[2],
     },
-    themeButtonText: {
+    buttonText: {
       color: theme.colors.text.inverse,
       fontSize: theme.typography.fontSize.base,
       fontWeight: theme.typography.fontWeight.medium,
+    },
+    logoutButton: {
+      backgroundColor: theme.colors.error[500],
+      paddingHorizontal: theme.spacing[6],
+      paddingVertical: theme.spacing[3],
+      borderRadius: theme.borderRadius.md,
+      marginTop: theme.spacing[4],
     },
     themeInfo: {
       fontSize: theme.typography.fontSize.sm,
@@ -75,23 +86,28 @@ function AppContent() {
     const nextTheme = themes[nextIndex];
     if (nextTheme) {
       setTheme(nextTheme);
-      // Also update Redux store
       dispatch(setReduxTheme(nextTheme));
     }
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    router.replace('/auth/login');
+  };
+
   return (
-    <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View style={styles.content}>
         <Text style={styles.title}>Universal Expo React Native Template</Text>
         <Text style={styles.subtitle}>
-          Theme system with NativeWind initialized successfully!
+          Navigation system with Expo Router working!
         </Text>
 
-        <TouchableOpacity style={styles.themeButton} onPress={cycleTheme}>
-          <Text style={styles.themeButtonText}>
-            Switch Theme (Current: {theme})
-          </Text>
+        <TouchableOpacity style={styles.button} onPress={cycleTheme}>
+          <Text style={styles.buttonText}>Switch Theme (Current: {theme})</Text>
         </TouchableOpacity>
 
         <Text style={styles.themeInfo}>
@@ -102,34 +118,10 @@ function AppContent() {
           Redux Theme: {reduxTheme} | Auth: {isAuthenticated ? 'Yes' : 'No'}
         </Text>
 
-        <StatusBar style={isDark ? 'light' : 'dark'} />
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.buttonText}>Logout (Demo)</Text>
+        </TouchableOpacity>
       </View>
-
-      {/* NativeWind Test Component */}
-      <NativeWindTest />
-
-      {/* NativeWind Example Component */}
-      <NativeWindExample
-        title="NativeWind Button"
-        variant="primary"
-        size="md"
-        onPress={() => {
-          // Handle button press
-        }}
-      />
-
-      {/* Redux Example Component */}
-      <ReduxExample />
     </ScrollView>
-  );
-}
-
-export default function App() {
-  return (
-    <StoreProvider>
-      <ThemeProvider>
-        <AppContent />
-      </ThemeProvider>
-    </StoreProvider>
   );
 }

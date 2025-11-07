@@ -3,8 +3,8 @@ const { withNativeWind } = require('nativewind/metro');
 
 const config = getDefaultConfig(__dirname);
 
-// Enable tree shaking for better bundle optimization
-config.resolver.platforms = ['ios', 'android', 'native', 'web'];
+// Remove web platform since we're not using it
+config.resolver.platforms = ['ios', 'android', 'native'];
 
 // Configure asset extensions
 config.resolver.assetExts.push(
@@ -29,25 +29,7 @@ config.resolver.assetExts.push(
 // Configure source extensions for NativeWind CSS support
 config.resolver.sourceExts.push('jsx', 'js', 'ts', 'tsx', 'json', 'css');
 
-// Enable minification in production
-config.transformer.minifierConfig = {
-  mangle: {
-    keep_fnames: true,
-  },
-  output: {
-    ascii_only: true,
-    quote_style: 3,
-    wrap_iife: true,
-  },
-  sourceMap: {
-    includeSources: false,
-  },
-  toplevel: false,
-  warnings: false,
-};
-
-// Enable experimental features for better performance
-config.transformer.experimentalImportSupport = true;
+// Essential for Expo Router to work properly
 config.transformer.unstable_allowRequireContext = true;
 
 module.exports = withNativeWind(config, { input: './global.css' });

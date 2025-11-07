@@ -27,8 +27,8 @@ module.exports = function (api) {
           },
         },
       ],
-      // Enable inline environment variables
-      'transform-inline-environment-variables',
+      // Note: transform-inline-environment-variables is commented out because it conflicts with Expo Router
+      // 'transform-inline-environment-variables',
       'react-native-worklets/plugin',
     ],
   };
