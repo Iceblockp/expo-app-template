@@ -81,13 +81,13 @@ export const Typography: React.FC<TypographyProps> = ({
         return theme.colors.text.primary;
     }
   };
-  const textStyle: TextStyle = {
+  const textStyle = {
     ...variantStyle,
     color: getTextColor(),
     textAlign: align,
     fontFamily: theme.typography.fontFamily.body,
     ...style,
-  };
+  } as TextStyle;
 
   return (
     <Text

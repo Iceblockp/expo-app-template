@@ -14,9 +14,28 @@ export type AuthStackParamList = {
 };
 
 export type TabsParamList = {
-  index: undefined; // Home tab
+  home: undefined;
   profile: undefined;
   settings: undefined;
+};
+
+export type HomeStackParamList = {
+  index: undefined;
+  details: undefined;
+  notifications: undefined;
+};
+
+export type ProfileStackParamList = {
+  index: undefined;
+  edit: undefined;
+  preferences: undefined;
+};
+
+export type SettingsStackParamList = {
+  index: undefined;
+  appearance: undefined;
+  language: undefined;
+  about: undefined;
 };
 
 export type OnboardingStackParamList = {
