@@ -7,3 +7,4 @@ export {
   layouts,
 } from './useNativeWindTheme';
 export { useAppDispatch, useAppSelector } from './useRedux';
+export { useAuth } from './useAuth';

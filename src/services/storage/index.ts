@@ -1,1 +1,1 @@
-// Storage services will be exported from here
+export { secureStorage } from './secureStorage';

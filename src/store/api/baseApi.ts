@@ -4,7 +4,8 @@ import type {
   FetchArgs,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query';
-import { tokenUtils, API_CONFIG } from '../../services/api/client';
+import { API_CONFIG } from '../../services/api/client';
+import { secureStorage } from '../../services/storage';
 // Base API configuration for RTK Query
 
 // Enhanced base query with token refresh logic
@@ -18,8 +19,8 @@ const baseQueryWithReauth: BaseQueryFn<
     baseUrl: API_CONFIG.baseURL,
     timeout: API_CONFIG.timeout,
     prepareHeaders: async headers => {
-      // Get token from storage
-      const token = await tokenUtils.getAuthToken();
+      // Get token from secure storage
+      const token = await secureStorage.getAccessToken();
 
       if (token) {
         headers.set('authorization', `Bearer ${token}`);
@@ -43,7 +44,7 @@ const baseQueryWithReauth: BaseQueryFn<
       console.log('Token expired, attempting refresh...');
     }
 
-    const refreshToken = await tokenUtils.getRefreshToken();
+    const refreshToken = await secureStorage.getRefreshToken();
 
     if (refreshToken) {
       // Attempt to refresh the token
@@ -62,23 +63,23 @@ const baseQueryWithReauth: BaseQueryFn<
         const { accessToken, refreshToken: newRefreshToken } =
           refreshResult.data as any;
 
-        await tokenUtils.setAuthToken(accessToken);
+        await secureStorage.setAccessToken(accessToken);
         if (newRefreshToken) {
-          await tokenUtils.setRefreshToken(newRefreshToken);
+          await secureStorage.setRefreshToken(newRefreshToken);
         }
 
         // Retry the original query with new token
         result = await baseQuery(args, api, extraOptions);
       } else {
         // Refresh failed, clear tokens and redirect to login
-        await tokenUtils.clearAllTokens();
+        await secureStorage.clearAuthData();
 
         // You can dispatch a logout action here if needed
         // api.dispatch(authSlice.actions.logout());
       }
     } else {
       // No refresh token available, clear tokens
-      await tokenUtils.clearAllTokens();
+      await secureStorage.clearAuthData();
     }
   }
 
