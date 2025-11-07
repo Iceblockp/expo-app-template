@@ -1,0 +1,35 @@
+{
+  "title": "Configuración",
+  "appearance": {
+    "title": "Apariencia",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema"
+  },
+  "language": {
+    "title": "Idioma",
+    "select": "Seleccionar Idioma",
+    "current": "Idioma Actual"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "push": "Notificaciones Push",
+    "email": "Notificaciones por Correo",
+    "sms": "Notificaciones por SMS"
+  },
+  "account": {
+    "title": "Cuenta",
+    "profile": "Editar Perfil",
+    "privacy": "Configuración de Privacidad",
+    "security": "Seguridad",
+    "logout": "Cerrar Sesión"
+  },
+  "about": {
+    "title": "Acerca de",
+    "version": "Versión",
+    "terms": "Términos de Servicio",
+    "privacy": "Política de Privacidad",
+    "support": "Soporte"
+  }
+}

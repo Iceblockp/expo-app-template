@@ -7,6 +7,7 @@ import { ThemeProvider, useTheme } from '../src/theme';
 import { StoreProvider } from '../src/store';
 import { QueryProvider } from '../src/services/api';
 import { useNavigationGuards } from '../src/navigation';
+import { LocalizationProvider } from '../src/locales';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -36,12 +37,14 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   return (
-    <StoreProvider>
-      <ThemeProvider>
-        <QueryProvider>
-          <RootLayoutNav />
-        </QueryProvider>
-      </ThemeProvider>
-    </StoreProvider>
+    <LocalizationProvider>
+      <StoreProvider>
+        <ThemeProvider>
+          <QueryProvider>
+            <RootLayoutNav />
+          </QueryProvider>
+        </ThemeProvider>
+      </StoreProvider>
+    </LocalizationProvider>
   );
 }

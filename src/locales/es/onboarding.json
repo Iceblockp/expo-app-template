@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "title": "Bienvenido a {{appName}}",
+    "description": "Comienza con nuestras increíbles funciones"
+  },
+  "step1": {
+    "title": "Función Uno",
+    "description": "Descubre la primera función increíble de nuestra aplicación"
+  },
+  "step2": {
+    "title": "Función Dos",
+    "description": "Aprende sobre nuestra segunda función poderosa"
+  },
+  "step3": {
+    "title": "Función Tres",
+    "description": "Explora nuestra tercera función increíble"
+  },
+  "getStarted": "Comenzar",
+  "skip": "Omitir",
+  "next": "Siguiente",
+  "back": "Atrás"
+}

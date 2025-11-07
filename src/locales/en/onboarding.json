@@ -1,0 +1,22 @@
+{
+  "welcome": {
+    "title": "Welcome to {{appName}}",
+    "description": "Get started with our amazing features"
+  },
+  "step1": {
+    "title": "Feature One",
+    "description": "Discover the first amazing feature of our app"
+  },
+  "step2": {
+    "title": "Feature Two",
+    "description": "Learn about our second powerful feature"
+  },
+  "step3": {
+    "title": "Feature Three",
+    "description": "Explore our third incredible feature"
+  },
+  "getStarted": "Get Started",
+  "skip": "Skip",
+  "next": "Next",
+  "back": "Back"
+}

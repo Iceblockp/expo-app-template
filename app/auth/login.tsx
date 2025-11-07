@@ -10,6 +10,7 @@ import { Link } from 'expo-router';
 import { useThemedStyles, useAuth } from '../../src/hooks';
 import { Button, Input } from '../../src/components/ui';
 import { validateEmail, validatePassword } from '../../src/utils/validation';
+import { LocalizationExample } from '@/components';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -114,6 +115,7 @@ export default function LoginScreen() {
         <Text style={styles.subtitle}>Sign in to continue</Text>
 
         {error && <Text style={styles.errorText}>{error}</Text>}
+        <LocalizationExample />
 
         <View style={styles.form}>
           <Input

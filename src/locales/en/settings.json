@@ -1,0 +1,35 @@
+{
+  "title": "Settings",
+  "appearance": {
+    "title": "Appearance",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": {
+    "title": "Language",
+    "select": "Select Language",
+    "current": "Current Language"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "push": "Push Notifications",
+    "email": "Email Notifications",
+    "sms": "SMS Notifications"
+  },
+  "account": {
+    "title": "Account",
+    "profile": "Edit Profile",
+    "privacy": "Privacy Settings",
+    "security": "Security",
+    "logout": "Sign Out"
+  },
+  "about": {
+    "title": "About",
+    "version": "Version",
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "support": "Support"
+  }
+}
