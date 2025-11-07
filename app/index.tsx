@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
 import { Redirect } from 'expo-router';
 import { useAppSelector } from '../src/hooks';
-import { selectIsAuthenticated } from '../src/store';
+import { selectIsAuthenticated, selectOnboardingCompleted } from '../src/store';
 
 export default function Index() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-
-  // TODO: Add onboarding completion check when onboarding is implemented
-  const hasCompletedOnboarding = true; // Placeholder
+  const hasCompletedOnboarding = useAppSelector(selectOnboardingCompleted);
 
   useEffect(() => {
     // Any initialization logic can go here

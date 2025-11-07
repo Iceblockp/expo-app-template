@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { router, useSegments } from 'expo-router';
 import { useAppSelector } from '../hooks';
-import { selectIsAuthenticated } from '../store';
+import { selectIsAuthenticated, selectOnboardingCompleted } from '../store';
 
 /**
  * Hook that handles authentication-based navigation guards
@@ -10,6 +10,7 @@ import { selectIsAuthenticated } from '../store';
 export function useAuthGuard() {
   const segments = useSegments();
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const hasCompletedOnboarding = useAppSelector(selectOnboardingCompleted);
 
   useEffect(() => {
     // Wait for navigation to be ready
@@ -17,9 +18,6 @@ export function useAuthGuard() {
 
     const inAuthGroup = segments[0] === 'auth';
     const inOnboardingGroup = segments[0] === 'onboarding';
-
-    // TODO: Add onboarding completion check when onboarding state is implemented
-    const hasCompletedOnboarding = true; // Placeholder
 
     // Use setTimeout to ensure navigation happens after mount
     const timeout = setTimeout(() => {
@@ -45,7 +43,7 @@ export function useAuthGuard() {
     }, 0);
 
     return () => clearTimeout(timeout);
-  }, [isAuthenticated, segments]);
+  }, [isAuthenticated, hasCompletedOnboarding, segments]);
 }
 
 /**
@@ -54,24 +52,25 @@ export function useAuthGuard() {
  */
 export function useOnboardingGuard() {
   const segments = useSegments();
+  const hasCompletedOnboarding = useAppSelector(selectOnboardingCompleted);
+  const isAuthenticated = useAppSelector(selectIsAuthenticated);
 
   useEffect(() => {
-    // TODO: Implement onboarding completion check
-    const hasCompletedOnboarding = true; // Placeholder
     const inOnboardingGroup = segments[0] === 'onboarding';
     const inAuthGroup = segments[0] === 'auth';
     const inTabsGroup = segments[0] === '(tabs)';
 
-    // If onboarding is not completed and user is not in onboarding screens
+    // If onboarding is not completed, user is not authenticated, and not in onboarding screens
     if (
       !hasCompletedOnboarding &&
+      !isAuthenticated &&
       !inOnboardingGroup &&
       !inAuthGroup &&
       !inTabsGroup
     ) {
       router.replace('/onboarding');
     }
-  }, [segments]);
+  }, [segments, hasCompletedOnboarding, isAuthenticated]);
 }
 
 /**
