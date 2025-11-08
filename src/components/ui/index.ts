@@ -38,3 +38,7 @@ export type {
 
 // Component Showcase
 export { ComponentShowcase } from './ComponentShowcase';
+
+// Optimized Components
+export { OptimizedImage } from './OptimizedImage';
+export type { OptimizedImageProps } from './OptimizedImage';
