@@ -8,6 +8,7 @@ import { StoreProvider } from '../src/store';
 import { QueryProvider } from '../src/services/api';
 import { useNavigationGuards } from '../src/navigation';
 import { LocalizationProvider } from '../src/locales';
+import { ErrorBoundary, NetworkStatus } from '../src/components/common';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -31,20 +32,23 @@ function RootLayoutNav() {
         }}
       />
       <StatusBar style={isDark ? 'light' : 'dark'} />
+      <NetworkStatus />
     </>
   );
 }
 
 export default function RootLayout() {
   return (
-    <LocalizationProvider>
-      <StoreProvider>
-        <ThemeProvider>
-          <QueryProvider>
-            <RootLayoutNav />
-          </QueryProvider>
-        </ThemeProvider>
-      </StoreProvider>
-    </LocalizationProvider>
+    <ErrorBoundary>
+      <LocalizationProvider>
+        <StoreProvider>
+          <ThemeProvider>
+            <QueryProvider>
+              <RootLayoutNav />
+            </QueryProvider>
+          </ThemeProvider>
+        </StoreProvider>
+      </LocalizationProvider>
+    </ErrorBoundary>
   );
 }
