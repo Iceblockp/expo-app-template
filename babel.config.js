@@ -24,6 +24,7 @@ module.exports = function (api) {
             '@/types': './src/types',
             '@/locales': './src/locales',
             '@/theme': './src/theme',
+            '@/config': './src/config',
           },
         },
       ],

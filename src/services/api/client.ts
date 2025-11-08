@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { config } from '@/config';
 
 // API Configuration
 export const API_CONFIG = {
-  baseURL: process.env.EXPO_PUBLIC_API_URL || 'https://api.example.com',
-  timeout: 10000,
+  baseURL: config.apiBaseUrl,
+  timeout: config.apiTimeout,
   retryAttempts: 3,
   retryDelay: 1000,
 };

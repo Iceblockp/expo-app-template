@@ -111,10 +111,33 @@ module.exports = [
     },
   },
   {
-    files: ['*.config.js', 'babel.config.js', 'metro.config.js'],
+    files: ['babel.config.js', 'metro.config.js', 'tailwind.config.js'],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'script',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'writable',
+        require: 'readonly',
+        exports: 'writable',
+        global: 'readonly',
+      },
+    },
+    rules: {
+      'no-console': 'warn',
+      'prefer-const': 'error',
+      'no-var': 'error',
+    },
+  },
+  {
+    files: ['app.config.js'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      sourceType: 'module',
       globals: {
         console: 'readonly',
         process: 'readonly',

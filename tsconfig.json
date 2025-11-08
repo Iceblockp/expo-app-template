@@ -24,7 +24,8 @@
       "@/constants/*": ["src/constants/*"],
       "@/types/*": ["src/types/*"],
       "@/locales/*": ["src/locales/*"],
-      "@/theme/*": ["src/theme/*"]
+      "@/theme/*": ["src/theme/*"],
+      "@/config/*": ["src/config/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"],
