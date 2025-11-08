@@ -7,12 +7,24 @@ import {
   useAppDispatch,
 } from '../../../src/hooks';
 import { useTheme } from '../../../src/theme';
+import { useLocalization } from '../../../src/hooks/useLocalization';
 import { selectTheme, logout } from '../../../src/store';
 
 export default function SettingsScreen() {
   const { theme, isDark, colors } = useTheme();
   const dispatch = useAppDispatch();
+  const { language } = useLocalization();
   const reduxTheme = useAppSelector(selectTheme);
+
+  // Get language display name
+  const getLanguageDisplayName = () => {
+    const languageMap: Record<string, string> = {
+      en: 'English',
+      es: 'Español',
+      ar: 'العربية',
+    };
+    return languageMap[language] || 'English';
+  };
 
   const styles = useThemedStyles(theme => ({
     container: {
@@ -136,7 +148,7 @@ export default function SettingsScreen() {
                 App language and region
               </Text>
             </View>
-            <Text style={styles.menuValue}>English</Text>
+            <Text style={styles.menuValue}>{getLanguageDisplayName()}</Text>
             <Ionicons
               name="chevron-forward"
               size={20}

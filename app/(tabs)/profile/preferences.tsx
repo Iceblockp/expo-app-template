@@ -1,15 +1,30 @@
 import { View, Text, ScrollView, Switch } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useThemedStyles } from '../../../src/hooks';
+import {
+  useThemedStyles,
+  useAppSelector,
+  useAppDispatch,
+} from '../../../src/hooks';
 import { useTheme } from '../../../src/theme';
-import { useState } from 'react';
+import { selectNotificationSettings } from '../../../src/store';
+import { updateNotificationSettings } from '../../../src/store/slices/appSettingsSlice';
 
 export default function PreferencesScreen() {
   const { colors } = useTheme();
-  const [notifications, setNotifications] = useState(true);
-  const [emailUpdates, setEmailUpdates] = useState(false);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [locationServices, setLocationServices] = useState(false);
+  const dispatch = useAppDispatch();
+  const notificationSettings = useAppSelector(selectNotificationSettings);
+
+  const handleToggleInApp = (inApp: boolean) => {
+    dispatch(updateNotificationSettings({ inApp }));
+  };
+
+  const handleToggleEmail = (email: boolean) => {
+    dispatch(updateNotificationSettings({ email }));
+  };
+
+  const handleTogglePush = (push: boolean) => {
+    dispatch(updateNotificationSettings({ push }));
+  };
 
   const styles = useThemedStyles(theme => ({
     container: {
@@ -99,14 +114,14 @@ export default function PreferencesScreen() {
               style={styles.preferenceIcon}
             />
             <View style={styles.preferenceContent}>
-              <Text style={styles.preferenceTitle}>All Notifications</Text>
+              <Text style={styles.preferenceTitle}>In-App Notifications</Text>
               <Text style={styles.preferenceDescription}>
-                Enable or disable all notifications
+                Show notifications within the app
               </Text>
             </View>
             <Switch
-              value={notifications}
-              onValueChange={setNotifications}
+              value={notificationSettings.inApp}
+              onValueChange={handleToggleInApp}
               trackColor={{
                 false: colors.neutral[300],
                 true: colors.primary[500],
@@ -123,14 +138,14 @@ export default function PreferencesScreen() {
               style={styles.preferenceIcon}
             />
             <View style={styles.preferenceContent}>
-              <Text style={styles.preferenceTitle}>Email Updates</Text>
+              <Text style={styles.preferenceTitle}>Email Notifications</Text>
               <Text style={styles.preferenceDescription}>
-                Receive updates via email
+                Receive notifications via email
               </Text>
             </View>
             <Switch
-              value={emailUpdates}
-              onValueChange={setEmailUpdates}
+              value={notificationSettings.email}
+              onValueChange={handleToggleEmail}
               trackColor={{
                 false: colors.neutral[300],
                 true: colors.primary[500],
@@ -153,8 +168,8 @@ export default function PreferencesScreen() {
               </Text>
             </View>
             <Switch
-              value={pushNotifications}
-              onValueChange={setPushNotifications}
+              value={notificationSettings.push}
+              onValueChange={handleTogglePush}
               trackColor={{
                 false: colors.neutral[300],
                 true: colors.primary[500],
@@ -172,25 +187,21 @@ export default function PreferencesScreen() {
 
           <View style={styles.preferenceItem}>
             <Ionicons
-              name="location-outline"
+              name="shield-checkmark-outline"
               size={24}
-              color={colors.warning[500]}
+              color={colors.success[500]}
               style={styles.preferenceIcon}
             />
             <View style={styles.preferenceContent}>
-              <Text style={styles.preferenceTitle}>Location Services</Text>
+              <Text style={styles.preferenceTitle}>Data Privacy</Text>
               <Text style={styles.preferenceDescription}>
-                Allow app to access your location
+                Your data is stored securely and never shared
               </Text>
             </View>
-            <Switch
-              value={locationServices}
-              onValueChange={setLocationServices}
-              trackColor={{
-                false: colors.neutral[300],
-                true: colors.primary[500],
-              }}
-              thumbColor="#fff"
+            <Ionicons
+              name="checkmark-circle"
+              size={24}
+              color={colors.success[500]}
             />
           </View>
         </View>

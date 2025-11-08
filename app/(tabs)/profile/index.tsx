@@ -3,11 +3,26 @@ import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemedStyles, useAppSelector } from '../../../src/hooks';
 import { useTheme } from '../../../src/theme';
-import { selectIsAuthenticated } from '../../../src/store';
+import { selectIsAuthenticated, selectCurrentUser } from '../../../src/store';
 
 export default function ProfileScreen() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
+  const user = useAppSelector(selectCurrentUser);
   const { colors } = useTheme();
+
+  // Get user initials for avatar
+  const getInitials = () => {
+    if (!user) return 'U';
+    const firstInitial = user.firstName?.charAt(0) || '';
+    const lastInitial = user.lastName?.charAt(0) || '';
+    return (firstInitial + lastInitial).toUpperCase() || 'U';
+  };
+
+  // Get full name
+  const getFullName = () => {
+    if (!user) return 'Guest User';
+    return `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'User';
+  };
 
   const styles = useThemedStyles(theme => ({
     container: {
@@ -104,10 +119,10 @@ export default function ProfileScreen() {
       <View style={styles.content}>
         <View style={styles.profileHeader}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>JD</Text>
+            <Text style={styles.avatarText}>{getInitials()}</Text>
           </View>
-          <Text style={styles.name}>John Doe</Text>
-          <Text style={styles.email}>john.doe@example.com</Text>
+          <Text style={styles.name}>{getFullName()}</Text>
+          <Text style={styles.email}>{user?.email || 'guest@example.com'}</Text>
         </View>
 
         <View style={styles.section}>

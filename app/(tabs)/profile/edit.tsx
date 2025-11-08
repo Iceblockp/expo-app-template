@@ -1,17 +1,46 @@
-import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useThemedStyles } from '../../../src/hooks';
+import {
+  useThemedStyles,
+  useAppSelector,
+  useAppDispatch,
+} from '../../../src/hooks';
 import { useTheme } from '../../../src/theme';
 import { Input } from '../../../src/components/ui';
-import { useState } from 'react';
+import { useState, useEffect, startTransition } from 'react';
+import { selectCurrentUser, updateUser } from '../../../src/store';
+import { validateEmail, validateName } from '../../../src/utils/validation';
 
 export default function EditProfileScreen() {
   const { colors } = useTheme();
-  const [firstName, setFirstName] = useState('John');
-  const [lastName, setLastName] = useState('Doe');
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [phone, setPhone] = useState('+1 (555) 123-4567');
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  // Validation errors
+  const [errors, setErrors] = useState<{
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+  }>({});
+
+  // Load user data on mount
+  useEffect(() => {
+    if (!user) return;
+
+    // Use startTransition to mark these updates as non-urgent
+    startTransition(() => {
+      setFirstName(user.firstName ?? '');
+      setLastName(user.lastName ?? '');
+      setEmail(user.email ?? '');
+      setPhone(''); // Phone is not in the User model yet
+    });
+  }, [user]);
 
   const styles = useThemedStyles(theme => ({
     container: {
@@ -101,9 +130,55 @@ export default function EditProfileScreen() {
     },
   }));
 
+  const validateForm = (): boolean => {
+    const newErrors: typeof errors = {};
+
+    // Validate first name
+    const firstNameValidation = validateName(firstName, 'First name');
+    if (!firstNameValidation.isValid && firstNameValidation.error) {
+      newErrors.firstName = firstNameValidation.error;
+    }
+
+    // Validate last name
+    const lastNameValidation = validateName(lastName, 'Last name');
+    if (!lastNameValidation.isValid && lastNameValidation.error) {
+      newErrors.lastName = lastNameValidation.error;
+    }
+
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid && emailValidation.error) {
+      newErrors.email = emailValidation.error;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSave = () => {
-    // TODO: Implement save functionality
-    router.back();
+    if (!validateForm()) {
+      Alert.alert('Validation Error', 'Please fix the errors before saving.');
+      return;
+    }
+
+    // Update user in Redux store
+    dispatch(
+      updateUser({
+        firstName,
+        lastName,
+        email,
+      })
+    );
+
+    Alert.alert('Success', 'Profile updated successfully!', [
+      { text: 'OK', onPress: () => router.back() },
+    ]);
+  };
+
+  const getInitials = () => {
+    const firstInitial = firstName?.charAt(0) || '';
+    const lastInitial = lastName?.charAt(0) || '';
+    return (firstInitial + lastInitial).toUpperCase() || 'U';
   };
 
   return (
@@ -111,9 +186,17 @@ export default function EditProfileScreen() {
       <View style={styles.content}>
         <View style={styles.avatarSection}>
           <View style={styles.avatarContainer}>
-            <Text style={styles.avatarText}>JD</Text>
+            <Text style={styles.avatarText}>{getInitials()}</Text>
           </View>
-          <TouchableOpacity style={styles.changePhotoButton}>
+          <TouchableOpacity
+            style={styles.changePhotoButton}
+            onPress={() =>
+              Alert.alert(
+                'Coming Soon',
+                'Photo upload feature will be available soon.'
+              )
+            }
+          >
             <Ionicons
               name="camera-outline"
               size={18}
@@ -130,8 +213,16 @@ export default function EditProfileScreen() {
             <Text style={styles.label}>First Name</Text>
             <Input
               value={firstName}
-              onChangeText={setFirstName}
+              onChangeText={text => {
+                setFirstName(text);
+                if (errors.firstName) {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  const { firstName: _, ...rest } = errors;
+                  setErrors(rest);
+                }
+              }}
               placeholder="Enter your first name"
+              {...(errors.firstName && { error: errors.firstName })}
             />
           </View>
 
@@ -139,8 +230,16 @@ export default function EditProfileScreen() {
             <Text style={styles.label}>Last Name</Text>
             <Input
               value={lastName}
-              onChangeText={setLastName}
+              onChangeText={text => {
+                setLastName(text);
+                if (errors.lastName) {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  const { lastName: _, ...rest } = errors;
+                  setErrors(rest);
+                }
+              }}
               placeholder="Enter your last name"
+              {...(errors.lastName && { error: errors.lastName })}
             />
           </View>
 
@@ -148,10 +247,18 @@ export default function EditProfileScreen() {
             <Text style={styles.label}>Email</Text>
             <Input
               value={email}
-              onChangeText={setEmail}
+              onChangeText={text => {
+                setEmail(text);
+                if (errors.email) {
+                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                  const { email: _, ...rest } = errors;
+                  setErrors(rest);
+                }
+              }}
               placeholder="Enter your email"
               keyboardType="email-address"
               autoCapitalize="none"
+              {...(errors.email && { error: errors.email })}
             />
           </View>
 
